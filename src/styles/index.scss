@@ -3,4 +3,22 @@ body,
 #app {
   height: 100%;
   overflow: auto;
+  font-family: Poppins;
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url('../assets/fonts/Poppins-Regular.ttf');
+}
+
+:root {
+  --el-color-primary: #cd7c33;
+}
+
+.line2-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }

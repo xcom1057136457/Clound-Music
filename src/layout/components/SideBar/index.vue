@@ -5,13 +5,13 @@
     <div class="dot w-3 h-3 rounded-full bg-color3 cursor-pointer"></div>
   </div>
 
-  <div class="logo-wrapper px-5 pt-5">
+  <a class="logo-wrapper px-5 pt-5 block" href="/">
     <img
       class="h-auto w-full cursor-pointer"
       src="@/assets/images/music-logo.png"
       alt=""
     />
-  </div>
+  </a>
 
   <div class="menu-wrapper px-5 mt-8">
     <div class="top-text pl-3 text-sm mb-4" style="color: #a8a8a8">{{

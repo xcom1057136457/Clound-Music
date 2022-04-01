@@ -37,10 +37,6 @@
         class="w-5 h-5 text-gray-500 mr-3 cursor-pointer hover:text-color1"
       />
 
-      <ZoomOut
-        class="w-5 h-5 text-gray-500 mr-3 cursor-pointer hover:text-color1"
-      />
-
       <el-select
         v-model="currentLang"
         class="w-36"
@@ -72,8 +68,7 @@
     UserFilled,
     Message,
     Sunny,
-    Operation,
-    ZoomOut
+    Operation
   } from '@element-plus/icons-vue'
   import { reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'

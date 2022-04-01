@@ -9,7 +9,14 @@ const en = {
   onLineMusic: 'Online Music',
   myMusic: 'My Music',
   clickToLogin: 'Click To Login',
-  searchMusic: 'Search Music'
+  searchMusic: 'Search Music',
+  featured: 'Featured',
+  soundStation: 'Sound Station',
+  rank: 'Rank',
+  singer: 'Singer',
+  categoryPlaylist: 'Category Playlist',
+  digitalAlbum: 'Digital Album',
+  mobileExclusive: 'Mobile Exclusive'
 }
 
 export default en

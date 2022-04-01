@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
 const routes: RouteRecordRaw[] = [
@@ -9,7 +9,11 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'Index',
-        component: () => import('@/views/index.vue')
+        component: () => import('@/views/index.vue'),
+        meta: {
+          title: '音乐馆',
+          keepAlive: true
+        }
       }
     ]
   },
@@ -20,7 +24,10 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'Video',
-        component: () => import('@/views/video/index.vue')
+        component: () => import('@/views/video/index.vue'),
+        meta: {
+          title: '视频'
+        }
       }
     ]
   },
@@ -31,7 +38,10 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'Radio',
-        component: () => import('@/views/radio/index.vue')
+        component: () => import('@/views/radio/index.vue'),
+        meta: {
+          title: '电台'
+        }
       }
     ]
   },
@@ -42,7 +52,10 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'Like',
-        component: () => import('@/views/like/index.vue')
+        component: () => import('@/views/like/index.vue'),
+        meta: {
+          title: '我喜欢'
+        }
       }
     ]
   },
@@ -53,7 +66,10 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'LocalMusic',
-        component: () => import('@/views/localMusic/index.vue')
+        component: () => import('@/views/localMusic/index.vue'),
+        meta: {
+          title: '本地歌曲'
+        }
       }
     ]
   },
@@ -64,7 +80,10 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'DownloadMusic',
-        component: () => import('@/views/downloadMusic/index.vue')
+        component: () => import('@/views/downloadMusic/index.vue'),
+        meta: {
+          title: '下载歌曲'
+        }
       }
     ]
   },
@@ -75,14 +94,17 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'Played',
-        component: () => import('@/views/played/index.vue')
+        component: () => import('@/views/played/index.vue'),
+        meta: {
+          title: '最近播放'
+        }
       }
     ]
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 })
 

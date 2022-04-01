@@ -7,9 +7,7 @@ module.exports = {
     container: {
       center: true
     },
-    screens: {
-      xl: '1200px'
-    },
+
     extend: {
       colors: {
         color1: '#cd7c33',

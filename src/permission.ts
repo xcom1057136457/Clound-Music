@@ -7,7 +7,8 @@ router.beforeEach(
     from: RouteLocationNormalized,
     next: NavigationGuardNext
   ) => {
-    document.title = (to.meta?.title as string) || 'Clound Music'
+    document.title =
+      (to.meta?.title as string) + ' - Clound Music' || 'Clound Music'
     next()
   }
 )

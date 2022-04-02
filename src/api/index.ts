@@ -4,7 +4,8 @@ enum Api {
   getBanner = '/banner',
   getPersonalized = '/personalized',
   getDjprogram = '/personalized/djprogram',
-  getMv = '/personalized/mv'
+  getMv = '/personalized/mv',
+  getNewsAlbum = '/album/newest'
 }
 
 // 获取banner
@@ -40,5 +41,13 @@ export function getMv(params: Record<string, number | string>) {
     url: Api.getMv,
     method: 'get',
     params
+  })
+}
+
+// 最新专辑
+export function getNewsAlbum() {
+  return request({
+    url: Api.getNewsAlbum,
+    method: 'get'
   })
 }

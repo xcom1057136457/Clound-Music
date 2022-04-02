@@ -16,7 +16,13 @@ const en = {
   singer: 'Singer',
   categoryPlaylist: 'Category Playlist',
   digitalAlbum: 'Digital Album',
-  mobileExclusive: 'Mobile Exclusive'
+  mobileExclusive: 'Mobile Exclusive',
+  officialPlaylist: 'Official Playlist',
+  officialSelectionAndSubscriptionPlaylist:
+    'Official Selection And Subscription Playlist',
+  recommendedAudioStations: 'Recommended Audio Stations',
+  recommendedMV: 'Recommended MV',
+  latestRelease: 'Latest Release'
 }
 
 export default en

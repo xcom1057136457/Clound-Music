@@ -2,8 +2,14 @@
   <div class="py-5 flex items-center justify-between">
     <div class="left-wrapper flex items-center">
       <div class="flex items-center text-gray-300 mr-5">
-        <ArrowLeft class="w-6 h-6 mr-6 cursor-pointer hover:text-color1" />
-        <ArrowRight class="w-6 h-6 cursor-pointer hover:text-color1" />
+        <ArrowLeft
+          class="w-6 h-6 mr-6 cursor-pointer hover:text-color1"
+          @click="goPrevHandler"
+        />
+        <ArrowRight
+          class="w-6 h-6 cursor-pointer hover:text-color1"
+          @click="goNextHandler"
+        />
       </div>
 
       <div class="relative">
@@ -70,10 +76,13 @@
     Sunny,
     Operation
   } from '@element-plus/icons-vue'
-  import { reactive, ref } from 'vue'
+  import { getCurrentInstance, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useRouter } from 'vue-router'
 
   const { locale } = useI18n()
+  const router = useRouter()
+  const { proxy }: any = getCurrentInstance()
 
   // 定义语言
   interface LanguageSelect {
@@ -98,6 +107,20 @@
   const langChangeHandler = (val: string) => {
     locale.value = val
     localStorage.setItem('lang', val)
+  }
+
+  const goPrevHandler = () => {
+    router.go(-1)
+    setTimeout(() => {
+      window.location.reload()
+    }, 100)
+  }
+
+  const goNextHandler = () => {
+    router.go(1)
+    setTimeout(() => {
+      window.location.reload()
+    }, 100)
   }
 </script>
 

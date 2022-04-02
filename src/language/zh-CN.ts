@@ -16,7 +16,12 @@ const zhCn = {
   singer: '歌手',
   categoryPlaylist: '分类歌单',
   digitalAlbum: '数字专辑',
-  mobileExclusive: '手机专享'
+  mobileExclusive: '手机专享',
+  officialPlaylist: '官方歌单',
+  officialSelectionAndSubscriptionPlaylist: '官方甄选订阅歌单',
+  recommendedAudioStations: '推荐有声电台',
+  recommendedMV: '推荐MV',
+  latestRelease: '最新发行'
 }
 
 export default zhCn

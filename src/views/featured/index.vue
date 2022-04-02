@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="featureLoading" class="mt-6">
+  <div v-loading="featureLoading" class="py-3">
     <el-carousel
       v-if="banner.length"
       :interval="3000"
@@ -13,8 +13,12 @@
 
     <div class="mt-6">
       <div class="flex items-end">
-        <span class="text-xl font-semibold mr-4">官方歌单</span>
-        <span class="text-sm text-gray-400">官方甄选订阅歌单</span>
+        <span class="text-xl font-semibold mr-4">{{
+          $t('officialPlaylist')
+        }}</span>
+        <span class="text-sm text-gray-400">{{
+          $t('officialSelectionAndSubscriptionPlaylist')
+        }}</span>
       </div>
 
       <div>
@@ -62,7 +66,9 @@
 
     <div class="mt-6">
       <div class="flex items-end">
-        <span class="text-xl font-semibold">推荐有声电台</span>
+        <span class="text-xl font-semibold">{{
+          $t('recommendedAudioStations')
+        }}</span>
       </div>
 
       <div>
@@ -111,14 +117,14 @@
 
     <div class="mt-6">
       <div class="flex items-end">
-        <span class="text-xl font-semibold">推荐MV</span>
+        <span class="text-xl font-semibold">{{ $t('recommendedMV') }}</span>
       </div>
 
       <div>
         <el-carousel
           v-if="mvList.length"
           indicator-position="none"
-          height="250px"
+          height="230px"
           :autoplay="false"
           :arrow="mvList.length > 1 ? 'hover' : 'never'"
         >
@@ -159,6 +165,55 @@
         </el-carousel>
       </div>
     </div>
+
+    <div class="mt-6">
+      <div class="flex items-end">
+        <span class="text-xl font-semibold">{{ $t('latestRelease') }}</span>
+      </div>
+
+      <div>
+        <el-carousel
+          v-if="albumsList.length"
+          indicator-position="none"
+          height="220px"
+          :autoplay="false"
+          :arrow="albumsList.length > 1 ? 'hover' : 'never'"
+        >
+          <el-carousel-item
+            v-for="(item, index) in albumsList"
+            :key="index"
+            class="items-end"
+            style="display: flex"
+          >
+            <el-row :gutter="20">
+              <el-col
+                v-for="actItem in item"
+                :key="actItem.index"
+                :span="4"
+                class="transform hover:-translate-y-3 transition-all duration-300"
+              >
+                <div class="cursor-pointer">
+                  <div class="relative music-image-wrapper">
+                    <el-image
+                      :src="actItem.picUrl"
+                      class="w-full h-auto rounded-xl"
+                    ></el-image>
+
+                    <VideoPlay
+                      class="w-8 h-8 hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white z-10"
+                    />
+                  </div>
+                  <div
+                    class="mt-2 text-sm text-gray-500 cursor-pointer hover:text-color1 transition-all line2-ellipsis"
+                    >{{ actItem.name }}</div
+                  >
+                </div>
+              </el-col>
+            </el-row>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -169,7 +224,13 @@
 </script>
 
 <script lang="ts" setup>
-  import { getBanner, getPersonalized, getDjprogram, getMv } from '@/api/index'
+  import {
+    getBanner,
+    getPersonalized,
+    getDjprogram,
+    getMv,
+    getNewsAlbum
+  } from '@/api/index'
   import { onMounted, ref } from 'vue'
   import { VideoPlay } from '@element-plus/icons-vue'
 
@@ -274,6 +335,37 @@
     })
   }
 
+  // 获取最新专辑
+  const albumsList = ref<any[]>([])
+  const getNewsAlbumHandler = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { code, albums }: any = await getNewsAlbum()
+        if (code == 200) {
+          const saveArr: any[] = []
+          let index = 0
+          const pageSize = 6
+          while (
+            albums.slice(index, index + pageSize).length <= pageSize &&
+            albums.slice(index, index + pageSize).length
+          ) {
+            const sliceArr = albums.slice(index, index + pageSize)
+            saveArr.push(sliceArr)
+            index += pageSize
+          }
+          albumsList.value = saveArr
+          resolve('')
+
+          resolve('')
+        } else {
+          reject()
+        }
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
+
   // 调用全部数据接口
   const featureLoading = ref<boolean>(false)
   const getAllData = () => {
@@ -282,7 +374,8 @@
       getBannerHandler(),
       getPersonalizedHandler(),
       getDjprogramHandler(),
-      getMvHandler()
+      getMvHandler(),
+      getNewsAlbumHandler()
     ])
       .then(() => {
         featureLoading.value = false

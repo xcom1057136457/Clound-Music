@@ -5,10 +5,10 @@
     <div class="sidebar w-64 h-full" style="background-color: #f0f0f0">
       <SideBar />
     </div>
-    <div class="detail-container flex-1 h-full flex flex-col px-5">
-      <Header />
+    <div class="detail-container flex-1 h-full flex flex-col">
+      <Header class="px-5" />
       <div class="flex-1 overflow-auto">
-        <el-scrollbar>
+        <el-scrollbar class="px-5">
           <router-view v-if="!$route.meta.keepAlive" />
           <router-view v-else v-slot="{ Component }">
             <keep-alive>

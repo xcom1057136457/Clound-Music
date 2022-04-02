@@ -10,9 +10,6 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    // @ts-ignore
-    // config.headers['X-Real-IP'] = '211.161.244.70'
-
     // get请求映射params参数
     if (config.method === 'get' && config.params) {
       let url = config.url + '?'

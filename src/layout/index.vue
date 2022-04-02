@@ -7,7 +7,11 @@
     </div>
     <div class="detail-container flex-1 h-full flex flex-col">
       <Header class="px-5" />
-      <div class="flex-1 overflow-auto">
+      <div
+        v-loading="loading"
+        class="flex-1 overflow-auto"
+        element-loading-text="Loading..."
+      >
         <el-scrollbar class="px-5">
           <router-view v-if="!$route.meta.keepAlive" />
           <router-view v-else v-slot="{ Component }">
@@ -29,6 +33,12 @@
 <script lang="ts" setup>
   import SideBar from './components/SideBar/index.vue'
   import Header from './components/Header/index.vue'
+  import { useMainStore } from '@/store/main'
+  import { computed } from '@vue/reactivity'
+
+  const loading = computed(() => {
+    return useMainStore().loading
+  })
 </script>
 
 <style lang="scss" scoped></style>

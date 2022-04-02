@@ -5,7 +5,8 @@ enum Api {
   getPersonalized = '/personalized',
   getDjprogram = '/personalized/djprogram',
   getMv = '/personalized/mv',
-  getNewsAlbum = '/album/newest'
+  getNewsAlbum = '/album/newest',
+  getDjTopList = '/dj/toplist'
 }
 
 // 获取banner
@@ -49,5 +50,14 @@ export function getNewsAlbum() {
   return request({
     url: Api.getNewsAlbum,
     method: 'get'
+  })
+}
+
+// 获取新晋电台榜/热门电台榜
+export function getDjTopList(params: Record<string, unknown>) {
+  return request({
+    url: Api.getDjTopList,
+    method: 'get',
+    params
   })
 }

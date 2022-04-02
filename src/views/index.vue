@@ -15,7 +15,7 @@
       >
     </div>
 
-    <div class="mt-3">
+    <div class="mt-3 py-3">
       <keep-alive>
         <component :is="componentName" />
       </keep-alive>
@@ -25,10 +25,12 @@
 
 <script lang="ts">
   import featured from './featured/index.vue'
+  import soundStation from './soundStation/index.vue'
   export default {
     name: 'IndexPage',
     components: {
-      featured
+      featured,
+      soundStation
     }
   }
 </script>

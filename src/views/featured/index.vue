@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="featureLoading" class="py-3">
+  <div>
     <el-carousel
       v-if="banner.length"
       :interval="3000"
@@ -7,7 +7,11 @@
       height="190px"
     >
       <el-carousel-item v-for="item in banner" :key="item.encodeId">
-        <el-image :src="item.imageUrl" class="w-full h-auto"></el-image>
+        <el-image
+          ref="bannerImage"
+          :src="item.imageUrl"
+          class="w-full h-auto"
+        ></el-image>
       </el-carousel-item>
     </el-carousel>
 
@@ -236,6 +240,7 @@
 
   // 获取banner
   const banner = ref<any[]>([])
+  const bannerImage = ref<unknown>(null)
   const getBannerHandler = () => {
     return new Promise(async (resolve, reject) => {
       const { code, banners }: any = await getBanner()
@@ -367,9 +372,7 @@
   }
 
   // 调用全部数据接口
-  const featureLoading = ref<boolean>(false)
   const getAllData = () => {
-    featureLoading.value = true
     Promise.all([
       getBannerHandler(),
       getPersonalizedHandler(),
@@ -377,12 +380,6 @@
       getMvHandler(),
       getNewsAlbumHandler()
     ])
-      .then(() => {
-        featureLoading.value = false
-      })
-      .catch(() => {
-        featureLoading.value = false
-      })
   }
 
   onMounted(() => {

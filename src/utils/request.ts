@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ElMessage as Message } from 'element-plus'
 import * as errorCode from './errorCode'
+import { useMainStore } from '@/store/main'
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_WEB_URL,
@@ -10,6 +11,12 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    // 调起loading
+    // @ts-ignore
+    if (config!.isLoading !== false) {
+      useMainStore().useSetLoading(true)
+    }
+
     // get请求映射params参数
     if (config.method === 'get' && config.params) {
       let url = config.url + '?'
@@ -67,6 +74,9 @@ service.interceptors.response.use(
       })
       return Promise.reject(new Error('error'))
     }
+
+    useMainStore().useSetLoading(false)
+
     return res.data
   },
   (error: AxiosError) => {

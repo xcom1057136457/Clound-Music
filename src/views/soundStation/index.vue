@@ -2,7 +2,7 @@
   <div>
     <div class="text-xl font-semibold mb-3"> 本周上新 </div>
 
-    <div class="overflow-hidden">
+    <div class="overflow-hidden relative top-new-wrapper">
       <el-row :gutter="20">
         <el-col
           v-for="item in notTopListArr"
@@ -15,7 +15,8 @@
               <img
                 :src="item.picUrl"
                 alt=""
-                class="w-full h-auto rounded-xl block"
+                class="w-full h-auto rounded-xl block object-cover"
+                load="lazing"
               />
 
               <VideoPlay
@@ -30,6 +31,33 @@
           </div>
         </el-col>
       </el-row>
+
+      <div
+        class="cursor-pointer top-arrow top-arrow-left w-9 h-9 rounded-full absolute top-1/2 transform -translate-x-full -translate-y-1/2 flex items-center justify-center transition-all"
+        :class="{ 'cursor-not-allowed': topListPage.page <= 1 }"
+        style="
+          background-color: rgba(0, 0, 0, 0.2);
+          color: rgba(255, 255, 255, 0.8);
+        "
+        @click="prevHandler"
+      >
+        <ArrowLeft class="w-7 h-7" />
+      </div>
+
+      <div
+        class="cursor-pointer top-arrow top-arrow-right w-9 h-9 rounded-full absolute top-1/2 transform translate-x-full right-0 -translate-y-1/2 flex items-center justify-center transition-all"
+        :class="{
+          'cursor-not-allowed':
+            topListPage.page >= Math.ceil(topList.length / topListPage.pageSize)
+        }"
+        style="
+          background-color: rgba(0, 0, 0, 0.2);
+          color: rgba(255, 255, 255, 0.8);
+        "
+        @click="nextHandler"
+      >
+        <ArrowRight class="w-7 h-7" />
+      </div>
     </div>
   </div>
 </template>
@@ -43,7 +71,7 @@
 <script lang="ts" setup>
   import { getDjTopList } from '@/api/index'
   import { onMounted, reactive, ref, computed } from 'vue'
-  import { VideoPlay } from '@element-plus/icons-vue'
+  import { VideoPlay, ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 
   // 获取新晋电台榜
   interface TopListPage {
@@ -90,6 +118,24 @@
     Promise.all([getDjTopListHandler()])
   }
 
+  // 上一页
+  const prevHandler = () => {
+    if (topListPage.page <= 1) {
+      return
+    }
+    topListPage.page--
+  }
+
+  // 下一页
+  const nextHandler = () => {
+    if (
+      topListPage.page >= Math.ceil(topList.value.length / topListPage.pageSize)
+    ) {
+      return
+    }
+    topListPage.page++
+  }
+
   onMounted(() => {
     getAllData()
   })
@@ -110,6 +156,24 @@
       }
       svg {
         display: block !important;
+      }
+    }
+  }
+
+  .top-new-wrapper {
+    &:hover {
+      .top-arrow-left {
+        transform: translate(10px, -50%);
+      }
+      .top-arrow-right {
+        transform: translate(-10px, -50%);
+      }
+    }
+
+    .top-arrow {
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.4) !important;
+        color: rgba(255, 255, 255, 1) !important;
       }
     }
   }

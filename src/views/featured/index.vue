@@ -11,6 +11,7 @@
           ref="bannerImage"
           :src="item.imageUrl"
           class="w-full h-auto object-cover rounded-xl"
+          loading="lazy"
           @load="bannerImageLoad"
         />
       </el-carousel-item>
@@ -53,6 +54,7 @@
                       :src="actItem.picUrl"
                       :alt="actItem.name"
                       class="w-full h-auto rounded-xl block object-cover"
+                      loading="lazy"
                       @load="personalizedLoad"
                     />
 
@@ -107,6 +109,7 @@
                       :src="actItem.picUrl"
                       :alt="actItem.name"
                       class="w-full h-auto rounded-xl block object-cover"
+                      loading="lazy"
                       @load="diProgramLoad"
                     />
 
@@ -158,6 +161,7 @@
                       :src="actItem.picUrl"
                       class="w-full h-auto rounded-xl overflow-hidden block object-cover"
                       style="height: 177px"
+                      loading="lazy"
                     />
 
                     <VideoPlay
@@ -209,6 +213,7 @@
                       :src="actItem.picUrl"
                       :alt="actItem.name"
                       class="w-full h-auto rounded-xl block object-cover"
+                      loading="lazy"
                       @load="albumsLoad"
                     />
 

@@ -11,6 +11,7 @@
           ref="bannerImage"
           :src="item.imageUrl"
           class="w-full h-auto object-cover rounded-xl"
+          @load="bannerImageLoad"
         />
       </el-carousel-item>
     </el-carousel>
@@ -52,6 +53,7 @@
                       :src="actItem.picUrl"
                       :alt="actItem.name"
                       class="w-full h-auto rounded-xl block object-cover"
+                      @load="personalizedLoad"
                     />
 
                     <VideoPlay
@@ -105,6 +107,7 @@
                       :src="actItem.picUrl"
                       :alt="actItem.name"
                       class="w-full h-auto rounded-xl block object-cover"
+                      @load="diProgramLoad"
                     />
 
                     <VideoPlay
@@ -206,6 +209,7 @@
                       :src="actItem.picUrl"
                       :alt="actItem.name"
                       class="w-full h-auto rounded-xl block object-cover"
+                      @load="albumsLoad"
                     />
 
                     <VideoPlay
@@ -242,20 +246,46 @@
   } from '@/api/index'
   import { getCurrentInstance, onMounted, ref } from 'vue'
   import { VideoPlay } from '@element-plus/icons-vue'
+  import { useThrottleFn } from '@vueuse/core'
 
   const { proxy }: any = getCurrentInstance()
 
+  // 设置banner高度
+  const bannerHeight = ref<string | number>('')
+  const bannerImageLoad = () => {
+    setTimeout(() => {
+      bannerHeight.value = proxy.$refs.bannerImage[0].height + 'px'
+    }, 0)
+  }
+
+  const playCarouselHeight = ref<number | string>('')
+  const personalizedLoad = () => {
+    setTimeout(() => {
+      playCarouselHeight.value = proxy.$refs.playListImage[0].height + 70 + 'px'
+    }, 0)
+  }
+
+  const djProgramHeight = ref<number | string>('')
+  const diProgramLoad = () => {
+    setTimeout(() => {
+      djProgramHeight.value = proxy.$refs.djprogramImage[0].height + 70 + 'px'
+    }, 0)
+  }
+
+  const albumsListHeight = ref<number | string>('')
+  const albumsLoad = () => {
+    setTimeout(() => {
+      albumsListHeight.value = proxy.$refs.albumsListImage[0].height + 70 + 'px'
+    }, 0)
+  }
+
   // 获取banner
   const banner = ref<any[]>([])
-  const bannerHeight = ref<string | number>('')
   const getBannerHandler = () => {
     return new Promise(async (resolve, reject) => {
       const { code, banners }: any = await getBanner()
       if (code == 200) {
         banner.value = banners
-        setTimeout(() => {
-          bannerHeight.value = proxy.$refs.bannerImage[0].height + 'px'
-        }, 0)
         resolve('')
       } else {
         reject()
@@ -265,7 +295,6 @@
 
   // 获取推荐歌单
   const personalized = ref<any[]>([])
-  const playCarouselHeight = ref<number | string>('')
   const getPersonalizedHandler = () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -283,11 +312,6 @@
             index += pageSize
           }
           personalized.value = saveArr
-          setTimeout(() => {
-            playCarouselHeight.value =
-              proxy.$refs.playListImage[0].height + 70 + 'px'
-          }, 0)
-
           resolve('')
         } else {
           reject()
@@ -300,7 +324,6 @@
 
   // 获取推荐电台
   const djprogram = ref<any[]>([])
-  const djProgramHeight = ref<number | string>('')
   const getDjprogramHandler = () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -318,10 +341,6 @@
             index += pageSize
           }
           djprogram.value = saveArr
-          setTimeout(() => {
-            djProgramHeight.value =
-              proxy.$refs.djprogramImage[0].height + 70 + 'px'
-          }, 0)
           resolve('')
         } else {
           reject()
@@ -363,7 +382,6 @@
 
   // 获取最新专辑
   const albumsList = ref<any[]>([])
-  const albumsListHeight = ref<number | string>('')
   const getNewsAlbumHandler = () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -381,10 +399,7 @@
             index += pageSize
           }
           albumsList.value = saveArr
-          setTimeout(() => {
-            albumsListHeight.value =
-              proxy.$refs.albumsListImage[0].height + 70 + 'px'
-          }, 0)
+
           resolve('')
         } else {
           reject()
@@ -406,8 +421,16 @@
     ])
   }
 
+  const bannerResizeHandler = useThrottleFn(() => {
+    bannerImageLoad()
+    personalizedLoad()
+    diProgramLoad()
+    albumsLoad()
+  }, 1000)
+
   onMounted(() => {
     getAllData()
+    window.addEventListener('resize', bannerResizeHandler)
   })
 </script>
 

@@ -4,14 +4,14 @@
       v-if="banner.length"
       :interval="3000"
       type="card"
-      height="190px"
+      :height="(bannerHeight as string)"
     >
       <el-carousel-item v-for="item in banner" :key="item.encodeId">
-        <el-image
+        <img
           ref="bannerImage"
           :src="item.imageUrl"
-          class="w-full h-auto"
-        ></el-image>
+          class="w-full h-auto object-cover rounded-xl"
+        />
       </el-carousel-item>
     </el-carousel>
 
@@ -29,7 +29,7 @@
         <el-carousel
           v-if="personalized.length"
           indicator-position="none"
-          height="220px"
+          :height="(playCarouselHeight as string)"
           :autoplay="false"
         >
           <el-carousel-item
@@ -47,10 +47,12 @@
               >
                 <div class="cursor-pointer">
                   <div class="relative music-image-wrapper">
-                    <el-image
+                    <img
+                      ref="playListImage"
                       :src="actItem.picUrl"
-                      class="w-full h-auto rounded-xl"
-                    ></el-image>
+                      :alt="actItem.name"
+                      class="w-full h-auto rounded-xl block object-cover"
+                    />
 
                     <VideoPlay
                       class="w-8 h-8 hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white z-10"
@@ -79,7 +81,7 @@
         <el-carousel
           v-if="djprogram.length"
           indicator-position="none"
-          height="220px"
+          :height="(djProgramHeight as string)"
           :autoplay="false"
           :arrow="djprogram.length > 1 ? 'hover' : 'never'"
         >
@@ -98,10 +100,12 @@
               >
                 <div class="cursor-pointer">
                   <div class="relative music-image-wrapper">
-                    <el-image
+                    <img
+                      ref="djprogramImage"
                       :src="actItem.picUrl"
-                      class="w-full h-auto rounded-xl"
-                    ></el-image>
+                      :alt="actItem.name"
+                      class="w-full h-auto rounded-xl block object-cover"
+                    />
 
                     <VideoPlay
                       class="w-8 h-8 hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white z-10"
@@ -128,7 +132,7 @@
         <el-carousel
           v-if="mvList.length"
           indicator-position="none"
-          height="230px"
+          height="250px"
           :autoplay="false"
           :arrow="mvList.length > 1 ? 'hover' : 'never'"
         >
@@ -147,12 +151,11 @@
               >
                 <div class="cursor-pointer">
                   <div class="relative music-image-wrapper">
-                    <el-image
+                    <img
                       :src="actItem.picUrl"
-                      class="w-full rounded-xl overflow-hidden"
-                      fit="fill"
+                      class="w-full h-auto rounded-xl overflow-hidden block object-cover"
                       style="height: 177px"
-                    ></el-image>
+                    />
 
                     <VideoPlay
                       class="w-8 h-8 hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white z-10"
@@ -179,7 +182,7 @@
         <el-carousel
           v-if="albumsList.length"
           indicator-position="none"
-          height="220px"
+          :height="(albumsListHeight as string)"
           :autoplay="false"
           :arrow="albumsList.length > 1 ? 'hover' : 'never'"
         >
@@ -198,10 +201,12 @@
               >
                 <div class="cursor-pointer">
                   <div class="relative music-image-wrapper">
-                    <el-image
+                    <img
+                      ref="albumsListImage"
                       :src="actItem.picUrl"
-                      class="w-full h-auto rounded-xl"
-                    ></el-image>
+                      :alt="actItem.name"
+                      class="w-full h-auto rounded-xl block object-cover"
+                    />
 
                     <VideoPlay
                       class="w-8 h-8 hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white z-10"
@@ -235,17 +240,22 @@
     getMv,
     getNewsAlbum
   } from '@/api/index'
-  import { onMounted, ref } from 'vue'
+  import { getCurrentInstance, onMounted, ref } from 'vue'
   import { VideoPlay } from '@element-plus/icons-vue'
+
+  const { proxy }: any = getCurrentInstance()
 
   // 获取banner
   const banner = ref<any[]>([])
-  const bannerImage = ref<unknown>(null)
+  const bannerHeight = ref<string | number>('')
   const getBannerHandler = () => {
     return new Promise(async (resolve, reject) => {
       const { code, banners }: any = await getBanner()
       if (code == 200) {
         banner.value = banners
+        setTimeout(() => {
+          bannerHeight.value = proxy.$refs.bannerImage[0].height + 'px'
+        }, 0)
         resolve('')
       } else {
         reject()
@@ -255,6 +265,7 @@
 
   // 获取推荐歌单
   const personalized = ref<any[]>([])
+  const playCarouselHeight = ref<number | string>('')
   const getPersonalizedHandler = () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -272,6 +283,11 @@
             index += pageSize
           }
           personalized.value = saveArr
+          setTimeout(() => {
+            playCarouselHeight.value =
+              proxy.$refs.playListImage[0].height + 70 + 'px'
+          }, 0)
+
           resolve('')
         } else {
           reject()
@@ -284,6 +300,7 @@
 
   // 获取推荐电台
   const djprogram = ref<any[]>([])
+  const djProgramHeight = ref<number | string>('')
   const getDjprogramHandler = () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -301,6 +318,10 @@
             index += pageSize
           }
           djprogram.value = saveArr
+          setTimeout(() => {
+            djProgramHeight.value =
+              proxy.$refs.djprogramImage[0].height + 70 + 'px'
+          }, 0)
           resolve('')
         } else {
           reject()
@@ -342,6 +363,7 @@
 
   // 获取最新专辑
   const albumsList = ref<any[]>([])
+  const albumsListHeight = ref<number | string>('')
   const getNewsAlbumHandler = () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -359,8 +381,10 @@
             index += pageSize
           }
           albumsList.value = saveArr
-          resolve('')
-
+          setTimeout(() => {
+            albumsListHeight.value =
+              proxy.$refs.albumsListImage[0].height + 70 + 'px'
+          }, 0)
           resolve('')
         } else {
           reject()
@@ -389,12 +413,6 @@
 
 <style lang="scss" scoped>
   .music-image-wrapper {
-    :deep .el-image {
-      display: block;
-      img {
-        display: block;
-      }
-    }
     &:hover {
       &::after {
         content: '';

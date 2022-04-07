@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="overflow-hidden">
     <div class="text-xl font-semibold mb-3"> 本周上新 </div>
 
-    <div class="overflow-hidden relative top-new-wrapper">
+    <div class="overflow-hidden relative top-new-wrapper mb-3">
       <el-row :gutter="20">
         <el-col
           v-for="item in notTopListArr"
@@ -59,6 +59,27 @@
         <ArrowRight class="w-7 h-7" />
       </div>
     </div>
+
+    <el-row :gutter="20">
+      <el-col
+        v-for="item in categoriesList"
+        :key="item.id"
+        :span="3"
+        class="mb-3"
+      >
+        <div
+          class="box-border flex flex-col justify-center items-center p-3 transition-all rounded-lg cursor-pointer cateListItem"
+        >
+          <div
+            class="w-9 h-9 bg-no-repeat bg-left bg-cover mb-1 imageBg"
+            :style="{ backgroundImage: `url(${item.picWebUrl})` }"
+          ></div>
+          <div class="text-sm text-gray-600 cateName">
+            {{ item.name }}
+          </div>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -69,7 +90,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { getDjTopList } from '@/api/index'
+  import { getDjTopList, getDjCatelist } from '@/api/index'
   import { onMounted, reactive, ref, computed } from 'vue'
   import { VideoPlay, ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 
@@ -80,14 +101,12 @@
     type?: 'new' | 'hot'
     pageSize: number
   }
-
   const topListPage = reactive<TopListPage>({
     limit: 100,
     page: 1,
     type: 'new',
     pageSize: 12
   })
-
   const topList = ref<any[]>([])
   const getDjTopListHandler = () => {
     return new Promise(async (resolve, reject) => {
@@ -113,9 +132,25 @@
     )
   })
 
+  // 获取电台分类
+  const categoriesList = ref<any[]>([])
+  const getDjCatelistHandler = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { code, categories }: any = await getDjCatelist()
+        if (code == 200) {
+          categoriesList.value = categories
+        }
+        resolve('')
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
+
   // 获取全部数据
   const getAllData = () => {
-    Promise.all([getDjTopListHandler()])
+    Promise.all([getDjTopListHandler(), getDjCatelistHandler()])
   }
 
   // 上一页
@@ -174,6 +209,19 @@
       &:hover {
         background-color: rgba(0, 0, 0, 0.4) !important;
         color: rgba(255, 255, 255, 1) !important;
+      }
+    }
+  }
+
+  .cateListItem {
+    background-color: rgba(#000, 0.05);
+    &:hover {
+      background-color: rgba(#000, 0.08);
+      .imageBg {
+        background-position: right !important;
+      }
+      .cateName {
+        color: #ea403a;
       }
     }
   }

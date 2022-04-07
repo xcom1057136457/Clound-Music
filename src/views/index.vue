@@ -4,7 +4,9 @@
       $t('musicPavilion')
     }}</div>
 
-    <div class="menu-wrapper flex items-center mt-5">
+    <div
+      class="menu-wrapper flex items-center mt-5 sticky top-0 z-10 bg-white pb-4"
+    >
       <div
         v-for="item in menuList"
         :key="item.componentName"
@@ -15,7 +17,7 @@
       >
     </div>
 
-    <div class="mt-3 py-3">
+    <div class="py-3">
       <keep-alive>
         <component :is="componentName" />
       </keep-alive>

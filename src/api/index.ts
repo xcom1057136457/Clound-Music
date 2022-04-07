@@ -6,7 +6,8 @@ enum Api {
   getDjprogram = '/personalized/djprogram',
   getMv = '/personalized/mv',
   getNewsAlbum = '/album/newest',
-  getDjTopList = '/dj/toplist'
+  getDjTopList = '/dj/toplist',
+  getDjCatelist = '/dj/catelist'
 }
 
 // 获取banner
@@ -59,5 +60,13 @@ export function getDjTopList(params: Record<string, unknown>) {
     url: Api.getDjTopList,
     method: 'get',
     params
+  })
+}
+
+// 获取电台分类
+export function getDjCatelist() {
+  return request({
+    url: Api.getDjCatelist,
+    method: 'get'
   })
 }
